@@ -12,7 +12,7 @@ class CompPriceApp extends StatelessWidget {
   Widget build(BuildContext context) {
     const seed = Colors.deepPurple;
     return MaterialApp(
-      title: 'CompPrice',
+      title: 'Сравни цену',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: seed),
         useMaterial3: true,
@@ -141,7 +141,7 @@ class _CompareScreenState extends State<CompareScreen> {
         : _products.map((p) => p.unitPrice).reduce((a, b) => a < b ? a : b);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('CompPrice')),
+      appBar: AppBar(title: const Text('Сравни цену')),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -243,37 +243,27 @@ class _ProductRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final unitPriceText = product.unitPrice.toStringAsFixed(2);
     final priceText = product.price.toString();
     final quantityText = product.quantity.toString();
+    final highlightColor = Theme.of(context).brightness == Brightness.light
+        ? const Color(0xFFC8E6C9)
+        : const Color(0xFF2E7D32);
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
-        color: isBest ? colorScheme.tertiaryContainer : null,
+        color: isBest ? highlightColor : null,
         borderRadius: BorderRadius.circular(12),
       ),
       child: ListTile(
-        leading: isBest
-            ? Icon(Icons.star, color: colorScheme.onTertiaryContainer)
-            : null,
-        title: Text(
-          product.name,
-          style: TextStyle(
-            color: isBest ? colorScheme.onTertiaryContainer : null,
-          ),
-        ),
+        title: Text(product.name),
         subtitle: Text(
           'Цена: $priceText · Количество: $quantityText\nЗа единицу: $unitPriceText',
-          style: TextStyle(
-            color: isBest ? colorScheme.onTertiaryContainer : null,
-          ),
         ),
         isThreeLine: true,
         trailing: IconButton(
           icon: const Icon(Icons.delete_outline),
-          color: isBest ? colorScheme.onTertiaryContainer : null,
           onPressed: onDelete,
           tooltip: 'Удалить',
         ),
